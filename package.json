@@ -1,0 +1,41 @@
+{
+  "name": "search-api-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
+    "start": "./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
+    "sequelize-skeleton": "./node_modules/sequelize-cli/lib/sequelize init:models; ./node_modules/sequelize-cli/lib/sequelize init:config",
+    "start-win": "cross-env ./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
+    "sequelize-skeleton-win": "cross-env ./node_modules/sequelize-cli/lib/sequelize init:models; ./node_modules/sequelize-cli/lib/sequelize init:config"    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-boost": "^0.4.4",
+    "apollo-server-express": "^2.9.3",
+    "babel-node": "0.0.1-security",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "graphql": "^14.5.5",
+    "graphql-tag": "^2.10.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.18.4",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "faker": "^4.1.0",
+    "lodash.random": "^3.2.0",
+    "lodash.times": "^4.3.2",
+    "nodemon": "^1.19.2",
+    "sequelize-cli": "^5.5.1",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8"
+  }
+}
