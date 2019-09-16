@@ -7,6 +7,17 @@ export default {
     Property: {
       user: (parent, args, context, info) => parent.getUser(),
     },
+    SearchResult: {
+        __resolveType (obj, context, info) {
+            if (obj.firstName) {
+                return 'User';
+            }
+            if (obj.street) {
+                return 'Property';
+            }
+            return null;
+        }
+    },
     Query: {
       properties: (parent, args, { db }, info) => db.property.findAll(),
       users: (parent, args, { db }, info) => db.user.findAll(),
@@ -20,14 +31,30 @@ export default {
             include: [db.user]
         });
       },
-      searchUsers: (parent, args, { db }, info) => {        
+      searchUsers: (parent, args, { db }, info) => {
         return db.user.findAll({
             where: {
                 [Op.or]: buildLike(db.user.searchFields, args.query)
             },
             include: [db.property]
         });
-      }        
+      },
+      search: (parent, args, { db }, info) => {
+        let results = {};
+        results.users = db.user.findAll({
+            where: {
+                [Op.or]: buildLike(db.user.searchFields, args.query)
+            },
+            include: [db.property]
+        });
+        results.properties = db.property.findAll({
+            where: {
+                [Op.or]: buildLike(db.property.searchFields, args.query)
+            },
+            include: [db.user]
+        });
+        return results;
+      }
     },
     Mutation: {
       createUser: (parent, { firstName, lastName }, { db }, info) =>

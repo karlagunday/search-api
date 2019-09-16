@@ -15,6 +15,12 @@ type Property {
   userId: ID!
   user: User!
 }
+
+type SearchResult {
+    users: [User!]
+    properties: [Property!]
+}
+
 type Query {
   properties: [Property!]!
   property(id: ID!): Property
@@ -22,6 +28,7 @@ type Query {
   users: [User!]!
   searchProperties(query: String!): [Property!]
   searchUsers(query: String!): [User!]
+  search(query: String): SearchResult!
 }
 type Mutation {
   createUser(firstName: String, lastName: String): User!
