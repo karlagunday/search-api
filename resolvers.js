@@ -1,4 +1,4 @@
-import { buildLike, Op } from "./helpers";
+import { modelSearch } from "./helpers";
 
 export default {
     User: {
@@ -24,36 +24,24 @@ export default {
       property: (parent, { id }, { db }, info) => db.property.findByPk(id),
       user: (parent, { id }, { db }, info) => db.user.findByPk(id),
       searchProperties: (parent, args, { db }, info) => {        
-        return db.property.findAll({
-            where: {
-                [Op.or]: buildLike(db.property.searchFields, args.query)
-            },
+        return modelSearch(db.property, args.query, {
             include: [db.user]
-        });
+        })
       },
       searchUsers: (parent, args, { db }, info) => {
-        return db.user.findAll({
-            where: {
-                [Op.or]: buildLike(db.user.searchFields, args.query)
-            },
+        return modelSearch(db.user, args.query, {
             include: [db.property]
-        });
+        })
       },
       search: (parent, args, { db }, info) => {
-        let results = {};
-        results.users = db.user.findAll({
-            where: {
-                [Op.or]: buildLike(db.user.searchFields, args.query)
-            },
-            include: [db.property]
-        });
-        results.properties = db.property.findAll({
-            where: {
-                [Op.or]: buildLike(db.property.searchFields, args.query)
-            },
-            include: [db.user]
-        });
-        return results;
+        return {
+            users: modelSearch(db.user, args.query, {
+                include: [db.property]
+            }),
+            properties: modelSearch(db.property, args.query, {
+                include: [db.user]
+            })
+        };
       }
     },
     Mutation: {
