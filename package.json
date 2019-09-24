@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
+    "build-win": "cross-env webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
     "start": "./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
     "sequelize-skeleton": "./node_modules/sequelize-cli/lib/sequelize init:models; ./node_modules/sequelize-cli/lib/sequelize init:config",
     "start-win": "cross-env ./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
