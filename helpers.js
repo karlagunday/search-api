@@ -4,7 +4,7 @@ export const modelSearch = (model, str, opt) => {
         where: {
             [Op.or]: buildLike(model.searchFields, str)
         },
-        include: opt.includeModels
+        include: opt.include
     });
 }
 
