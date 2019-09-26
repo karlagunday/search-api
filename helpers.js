@@ -1,4 +1,5 @@
-export const Op = require('sequelize').Op;
+export const sequelize = require('sequelize');
+export const Op = sequelize.Op;
 export const modelSearch = (model, str, opt) => {
     return model.findAll({
         where: {
@@ -13,7 +14,7 @@ export const buildLike = (fields, str) => {
     fields.forEach((field) => {
         like.push({
             [field]: {
-                [Op.like]: '%' + str + '%'
+                [Op.iLike]: '%' + str + '%'
             }
         });
     });
