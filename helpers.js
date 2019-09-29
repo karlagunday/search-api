@@ -14,6 +14,7 @@ export const searchQuery = (model, str, opt = {}) => {
                 }
             )
         ],
-        include: opt.include
+        include: opt.include,
+        limit: opt.limit
     });
 }

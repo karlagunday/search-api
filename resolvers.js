@@ -43,8 +43,12 @@ export default {
         };
       },
       autosuggest: async (parent, args, { db }, info) => {
-        let users = await searchQuery(db.user, args.query);
-        let properties = await searchQuery(db.property, args.query);
+        let users = await searchQuery(db.user, args.query, {
+          limit: 10
+        });
+        let properties = await searchQuery(db.property, args.query, {
+          limit: 10
+        });
         return {
           users: users.map((user) => {
             let values = db.user.searchFields.map((field) => {
