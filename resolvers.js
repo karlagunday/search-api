@@ -47,10 +47,16 @@ export default {
         let properties = await searchQuery(db.property, args.query);
         return {
           users: users.map((user) => {
-            return user.firstName + " " + user.lastName;
+            let values = db.user.searchFields.map((field) => {
+              return user[field];
+            });
+            return values.join(" ");
           }),
           properties: properties.map((property) => {
-            return property.street + " " + property.city + " " + property.state + " " + property.zip;
+            let values = db.property.searchFields.map((field) => {
+              return property[field];
+            });
+            return values.join(" ");
           }),
         };
       }
