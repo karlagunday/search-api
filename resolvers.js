@@ -1,5 +1,4 @@
-import { modelSearch } from "./helpers";
-
+import { searchQuery } from "./helpers";
 export default {
     User: {
       properties: (parent, args, context, info) => parent.getProperties(),
@@ -24,23 +23,35 @@ export default {
       property: (parent, { id }, { db }, info) => db.property.findByPk(id),
       user: (parent, { id }, { db }, info) => db.user.findByPk(id),
       searchProperties: (parent, args, { db }, info) => {        
-        return modelSearch(db.property, args.query, {
+        return searchQuery(db.property, args.query, {
             include: [db.user]
         })
       },
       searchUsers: (parent, args, { db }, info) => {
-        return modelSearch(db.user, args.query, {
+        return searchQuery(db.user, args.query, {
             include: [db.property]
         })
       },
       search: (parent, args, { db }, info) => {
         return {
-            users: modelSearch(db.user, args.query, {
+            users: searchQuery(db.user, args.query, {
                 include: [db.property]
             }),
-            properties: modelSearch(db.property, args.query, {
+            properties: searchQuery(db.property, args.query, {
                 include: [db.user]
             })
+        };
+      },
+      autosuggest: async (parent, args, { db }, info) => {
+        let users = await searchQuery(db.user, args.query);
+        let properties = await searchQuery(db.property, args.query);
+        return {
+          users: users.map((user) => {
+            return user.firstName + " " + user.lastName;
+          }),
+          properties: properties.map((property) => {
+            return property.street + " " + property.city + " " + property.state + " " + property.zip;
+          }),
         };
       }
     },

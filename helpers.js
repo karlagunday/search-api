@@ -1,22 +1,19 @@
 export const sequelize = require('sequelize');
 export const Op = sequelize.Op;
-export const modelSearch = (model, str, opt) => {
+export const searchQuery = (model, str, opt = {}) => {
+    let columns = model.searchFields.map ((field) => {
+        return sequelize.col(field);
+    });
     return model.findAll({
-        where: {
-            [Op.or]: buildLike(model.searchFields, str)
-        },
+        where: [
+            {}, // sequelize version no longer support array in where function. this is to trick it
+            sequelize.where(
+                sequelize.fn("concat_ws", " ", ...columns), 
+                {
+                    [Op.iLike]: '%' + str + "%"
+                }
+            )
+        ],
         include: opt.include
     });
-}
-
-export const buildLike = (fields, str) => {
-    let like = [];
-    fields.forEach((field) => {
-        like.push({
-            [field]: {
-                [Op.iLike]: '%' + str + '%'
-            }
-        });
-    });
-    return like;
 }

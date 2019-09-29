@@ -21,6 +21,11 @@ type SearchResult {
     properties: [Property!]
 }
 
+type Autosuggest {
+  users: [String!]
+  properties: [String!]
+}
+
 type Query {
   properties: [Property!]!
   property(id: ID!): Property
@@ -29,6 +34,7 @@ type Query {
   searchProperties(query: String!): [Property!]
   searchUsers(query: String!): [User!]
   search(query: String): SearchResult!
+  autosuggest(query: String): Autosuggest!
 }
 type Mutation {
   createUser(firstName: String, lastName: String): User!
